@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="8dp"
+    android:paddingStart="8dip"
+    android:paddingEnd="8dip"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView android:id="@+id/icon"
+        android:layout_width="24dip"
+        android:layout_height="24dip"/>
+
+    <TextView android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart" />
+</LinearLayout>
+
