@@ -3,6 +3,7 @@ package youmo.slook;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -23,6 +24,7 @@ public class ReadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         String url= getIntent().getStringExtra("url")+"&v=2";
         wb=(WebView)findViewById(R.id.webView_read);
 
