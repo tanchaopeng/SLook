@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,7 +28,8 @@ import static youmo.slook.HttpHelper.AsyncTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView tv;
+    EditText et;
+    Button btn;
     ListView lv;
     ArrayList<BookModel> bookData;
     @Override
@@ -37,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //tv=(TextView)findViewById(R.id.textView_content);
         lv=(ListView)findViewById(R.id.listView_BookList);
+        et=(EditText)findViewById(R.id.editText_search);
+        btn=(Button)findViewById(R.id.button_search);
+
+
 
         bookData=new ArrayList<BookModel>();
         final ArrayAdapter adapter=new ArrayAdapter<BookModel>(this,R.layout.adapter_booklist,bookData){
@@ -49,20 +56,26 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        AsyncTask("http://k.sogou.com/search?keyword=%E9%80%86%E5%91%BD",new HttpHelper.IHttpResult(){
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void HttpResult(Object... objects) {
-                String html=(String)objects[0];
-                ArrayList<String> l=StringHelper.MidListString(html,"startReadingBook({","}");
-                for (String s:l)
-                {
-                    BookModel b=new BookModel();
-                    String url="id="+StringHelper.MidString(s,"id\":\"","\"")+"&md="+StringHelper.MidString(s,"md\":\"","\"");
-                    b.setUrl("http://k.sogou.com/list?"+url);
-                    b.setName(StringHelper.MidString(s,"name\":\"","\"")+" - "+StringHelper.MidString(s,"author\":\"","\""));
-                    bookData.add(b);
-                }
-                lv.setAdapter(adapter);
+            public void onClick(View v) {
+                adapter.clear();
+                AsyncTask("http://k.sogou.com/search?keyword="+et.getText(),new HttpHelper.IHttpResult(){
+                    @Override
+                    public void HttpResult(Object... objects) {
+                        String html=(String)objects[0];
+                        ArrayList<String> l=StringHelper.MidListString(html,"startReadingBook({","}");
+                        for (String s:l)
+                        {
+                            BookModel b=new BookModel();
+                            String url="id="+StringHelper.MidString(s,"id\":\"","\"")+"&md="+StringHelper.MidString(s,"md\":\"","\"");
+                            b.setUrl("http://k.sogou.com/list?"+url);
+                            b.setName(StringHelper.MidString(s,"name\":\"","\"")+" - "+StringHelper.MidString(s,"author\":\"","\""));
+                            bookData.add(b);
+                        }
+                        lv.setAdapter(adapter);
+                    }
+                });
             }
         });
 
